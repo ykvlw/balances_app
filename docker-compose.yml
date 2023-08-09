@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: balances_app
+    ports:
+      - 8000:8000
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0"]
+    env_file: .env
+    depends_on:
+      - mongo
+
+  mongo:
+    image: "mongo:latest"
+    ports:
+      - 27017:27017
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: pass
+      MONGO_INITDB_DATABASE: token_balance_db
